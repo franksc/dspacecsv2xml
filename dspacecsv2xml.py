@@ -8,6 +8,7 @@ import argparse, os
 import re
 import tablib
 import xml.dom.minidom as minidom
+from pathlib import Path
 
 def addsubelement(document, parent, element, value):
     element = re.sub(r"\[en\]", "", element)
@@ -42,8 +43,8 @@ def main():
     for row in range(data.height):
         processrow(root, document, data, row)
 
-    outfile = open(os.path.splitext(os.path.basename(args.infilename))[0] + ".xml", "w")
-    print(document.toprettyxml(), file=outfile)
+    outfile = Path(args.infilename).with_suffix(".xml")
+    outfile.write_text(document.toprettyxml())
 
 if __name__ == "__main__":
     main()
